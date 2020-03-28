@@ -4,4 +4,5 @@ import * as cdk from '@aws-cdk/core';
 import { EdgeRedirectorStack } from '../lib/edge-redirector-stack';
 
 const app = new cdk.App();
-new EdgeRedirectorStack(app, 'EdgeRedirectorStack');
+const props = { env: { account: '687105911108', region: 'us-east-1' } };
+new EdgeRedirectorStack(app, 'EdgeRedirectorStack', props);
