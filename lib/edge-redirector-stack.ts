@@ -1,5 +1,4 @@
 import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 
@@ -8,8 +7,6 @@ const sha256 = require('sha256-file');
 export class EdgeRedirectorStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
-    const origin = new s3.Bucket(this, 'origin');
 
     const redirectFunction = new lambda.Function(this, 'redirect', {
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -23,7 +20,9 @@ export class EdgeRedirectorStack extends cdk.Stack {
 
     new cloudfront.CloudFrontWebDistribution(this, 'distribution', {
       originConfigs: [{
-        s3OriginSource: { s3BucketSource: origin },
+        customOriginSource: {
+          domainName: 'example.com'
+        },
         behaviors: [{
           isDefaultBehavior: true,
           lambdaFunctionAssociations: [
