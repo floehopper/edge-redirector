@@ -8,16 +8,10 @@ export class EdgeRedirectorStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const redirectFunction = new lambda.Function(this, 'redirect', {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      handler: 'index.handler',
-      code: lambda.Code.asset('./lambdaFunctions/redirect')
-    });
+    this.createDistribution('hannahsmithson.org', 'hannahsmithsonOrg.handler');
+  }
 
-    const redirectVersion = redirectFunction.addVersion(
-      ':sha256:' + sha256('./lambdaFunctions/redirect/index.js')
-    );
-
+  createDistribution(domain: string, handler: string) {
     new cloudfront.CloudFrontWebDistribution(this, 'distribution', {
       originConfigs: [{
         customOriginSource: {
@@ -28,11 +22,23 @@ export class EdgeRedirectorStack extends cdk.Stack {
           lambdaFunctionAssociations: [
             {
               eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
-              lambdaFunction: redirectVersion
+              lambdaFunction: this.redirectVersion(domain, handler)
             }
           ]
         }]
       }]
     });
+  }
+
+  redirectVersion(domain: string, handler: string) {
+    const redirectFunction = new lambda.Function(this, 'redirect', {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      handler: handler,
+      code: lambda.Code.asset('./lambdaFunctions/redirect')
+    });
+
+    return redirectFunction.addVersion(
+      ':sha256:' + sha256(`./lambdaFunctions/redirect/${domain}.js`)
+    );
   }
 }
