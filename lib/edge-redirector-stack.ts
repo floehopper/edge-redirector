@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as origins from '@aws-cdk/aws-cloudfront-origins';
 
 export class EdgeRedirectorStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -11,21 +12,16 @@ export class EdgeRedirectorStack extends cdk.Stack {
   }
 
   createDistribution(domain: string, handler: string) {
-    new cloudfront.CloudFrontWebDistribution(this, 'distribution', {
-      originConfigs: [{
-        customOriginSource: {
-          domainName: 'example.com'
-        },
-        behaviors: [{
-          isDefaultBehavior: true,
-          lambdaFunctionAssociations: [
-            {
-              eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
-              lambdaFunction: this.redirectVersion(domain, handler)
-            }
-          ]
-        }]
-      }]
+    new cloudfront.Distribution(this, 'distribution', {
+      defaultBehavior: {
+        origin: new origins.HttpOrigin('example.com'),
+        edgeLambdas: [
+          {
+            eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
+            functionVersion: this.redirectVersion(domain, handler)
+          }
+        ]
+      }
     });
   }
 
@@ -33,7 +29,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
     const redirectFunction = new cloudfront.experimental.EdgeFunction(this, 'redirect', {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: handler,
-      code: lambda.Code.asset('./lambdaFunctions/redirect')
+      code: lambda.Code.fromAsset('./lambdaFunctions/redirect')
     });
 
     return redirectFunction.currentVersion;
