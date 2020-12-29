@@ -9,6 +9,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
     super(scope, id, props);
 
     this.createDistribution('hannahsmithson.org', 'hannahsmithsonOrg.handler');
+    this.createDistribution('floehopper.org', 'floehopperOrg.handler');
   }
 
   createDistribution(domain: string, handler: string) {
