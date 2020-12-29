@@ -21,7 +21,8 @@ export class EdgeRedirectorStack extends cdk.Stack {
             functionVersion: this.redirectVersion(domain, handler)
           }
         ]
-      }
+      },
+      enableLogging: true
     });
   }
 
