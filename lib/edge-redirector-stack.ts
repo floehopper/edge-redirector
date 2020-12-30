@@ -8,11 +8,12 @@ export class EdgeRedirectorStack extends cdk.Stack {
     super(scope, id, props);
 
     // this.createDistribution('hannahsmithson.org', 'hannahsmithsonOrg.handler');
-    this.createDistribution('floehopper.org', 'floehopperOrg.handler');
+    this.createDistribution('floehopper.org', 'floehopperOrg');
+    this.createDistribution('blog.floehopper.org', 'blogFloehopperOrg');
   }
 
   createDistribution(domain: string, handler: string) {
-    new cloudfront.Distribution(this, 'distribution', {
+    new cloudfront.Distribution(this, `${handler}Distribution`, {
       defaultBehavior: {
         origin: new origins.HttpOrigin('example.com'),
         edgeLambdas: [
@@ -27,9 +28,9 @@ export class EdgeRedirectorStack extends cdk.Stack {
   }
 
   redirectVersion(domain: string, handler: string) : lambda.IVersion {
-    const redirectFunction = new cloudfront.experimental.EdgeFunction(this, 'redirect', {
+    const redirectFunction = new cloudfront.experimental.EdgeFunction(this, `${handler}Redirect`, {
       runtime: lambda.Runtime.NODEJS_12_X,
-      handler: handler,
+      handler: `${handler}.handler`,
       code: lambda.Code.fromAsset('./lambdaFunctions/redirect')
     });
 
