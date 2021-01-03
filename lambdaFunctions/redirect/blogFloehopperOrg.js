@@ -44,6 +44,7 @@ exports.handler = function(event, context, callback) {
 
     // Redirect blog.floehopper.org -> jamesmead.org
     ['^/(.*)$', (m) => `http://jamesmead.org/${m[1]}`],
+    ['^$', (m) => `http://jamesmead.org`],
 ];
 
   let redirectUrl;
