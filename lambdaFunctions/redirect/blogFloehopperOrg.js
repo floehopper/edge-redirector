@@ -60,15 +60,25 @@ exports.handler = function(event, context, callback) {
     };
   };
 
-  const response = {
-    status: '301',
-    statusDescription: 'Moved Permanently',
-    headers: {
-      location: [{
-        key: 'Location',
-        value: redirectUrl
-      }],
-    },
+  let response;
+
+  if (redirectUrl) {
+    response = {
+      status: '301',
+      statusDescription: 'Moved Permanently',
+      headers: {
+        location: [{
+          key: 'Location',
+          value: redirectUrl
+        }],
+      }
+    };
+  } else {
+    response = {
+      status: '404',
+      statusDescription: 'Not Found'
+    };
   };
+
   callback(null, response);
 };
