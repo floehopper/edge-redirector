@@ -35,19 +35,31 @@ exports.handler = function(event, context, callback) {
     ['.?', 'https://www.psy.ox.ac.uk/team/hannah-smithson']
   ];
 
-  let [_, redirectUrl] = mapping.find(([pattern, url]) => {
+  let match = mapping.find(([pattern, url]) => {
     return new RegExp(pattern).test(request.uri);
   });
 
-  const response = {
-    status: '301',
-    statusDescription: 'Moved Permanently',
-    headers: {
-      location: [{
-        key: 'Location',
-        value: redirectUrl
-      }],
-    },
+  let response;
+
+  if (match && match[1]) {
+    let redirectUrl = match[1];
+
+    response = {
+      status: '301',
+      statusDescription: 'Moved Permanently',
+      headers: {
+        location: [{
+          key: 'Location',
+          value: redirectUrl
+        }]
+      },
+    };
+  } else {
+    response = {
+      status: '404',
+      statusDescription: 'Not Found'
+    };
   };
+
   callback(null, response);
 };
