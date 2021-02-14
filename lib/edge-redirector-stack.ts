@@ -18,7 +18,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
 
   createDistribution(domain: string, handler: string, certificateArn: string) {
     const certificate = acm.Certificate.fromCertificateArn(this, `${handler}Certificate`, certificateArn);
-    new cloudfront.Distribution(this, `${handler}Distribution`, {
+    const distribution = new cloudfront.Distribution(this, `${handler}Distribution`, {
       defaultBehavior: {
         origin: new origins.HttpOrigin('example.com'),
         edgeLambdas: [
@@ -32,6 +32,8 @@ export class EdgeRedirectorStack extends cdk.Stack {
       certificate: certificate,
       enableLogging: true
     });
+
+    new cdk.CfnOutput(this, domain, { value: distribution.domainName });
   }
 
   redirectVersion(domain: string, handler: string) : lambda.IVersion {
