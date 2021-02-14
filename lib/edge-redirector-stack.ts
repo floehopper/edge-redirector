@@ -8,7 +8,8 @@ export class EdgeRedirectorStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // this.createDistribution('hannahsmithson.org', 'hannahsmithsonOrg.handler');
+    this.createDistribution('hannahsmithson.org', 'hannahsmithsonOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/1a5f5b27-456a-423e-ae4f-5253d431a2f0');
+    this.createDistribution('www.hannahsmithson.org', 'wwwHannahsmithsonOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/1b9ba486-30f7-4fd8-ba41-de97355bb793');
     this.createDistribution('floehopper.org', 'floehopperOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/9f1d191d-aa36-4dac-85f2-f60684a62b65');
     this.createDistribution('www.floehopper.org', 'wwwFloehopperOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/64224aef-5ab9-47f4-8828-c87ed3fa9187');
     this.createDistribution('blog.floehopper.org', 'blogFloehopperOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/aa11ee5a-54db-4a04-8307-f77330f86cb5');
