@@ -15,6 +15,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
     this.createDistribution('blog.floehopper.org', 'blogFloehopperOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/aa11ee5a-54db-4a04-8307-f77330f86cb5');
     this.createDistribution('feeds.floehopper.org', 'feedsFloehopperOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/abb2fd4c-b68f-4563-831d-af74ae403e37');
     this.createDistribution('feeds.jamesmead.org', 'feedsJamesmeadOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/9a96ccb3-cb71-4b0e-ab57-e675c5527114');
+    this.createDistribution('r.jamesmead.org', 'rJamesmeadOrg', 'arn:aws:acm:us-east-1:687105911108:certificate/78a2ffc5-78c1-4748-a082-2dc5cbd6e56c');
   }
 
   createDistribution(domain: string, handler: string, certificateArn: string) {
