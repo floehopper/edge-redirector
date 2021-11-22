@@ -26,7 +26,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
         edgeLambdas: [
           {
             eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
-            functionVersion: this.redirectVersion(domain, handler)
+            functionVersion: this.redirectVersion(handler)
           }
         ]
       },
@@ -38,7 +38,7 @@ export class EdgeRedirectorStack extends cdk.Stack {
     new cdk.CfnOutput(this, domain, { value: distribution.domainName });
   }
 
-  redirectVersion(domain: string, handler: string) : lambda.IVersion {
+  redirectVersion(handler: string) : lambda.IVersion {
     const redirectFunction = new cloudfront.experimental.EdgeFunction(this, `${handler}Redirect`, {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: `${handler}.handler`,
