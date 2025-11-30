@@ -40,7 +40,7 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          cdk deploy --all --require-approval never
+          npx cdk deploy --all --require-approval never
 
       - name: Promote main -> production
         run: |
