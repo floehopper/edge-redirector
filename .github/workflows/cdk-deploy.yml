@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: cdk-deploy-main
+  cancel-in-progress: false
+
 jobs:
   cdk-deploy:
     runs-on: ubuntu-latest
