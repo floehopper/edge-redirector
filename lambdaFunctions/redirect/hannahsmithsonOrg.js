@@ -32,7 +32,7 @@ exports.handler = function(event, context, callback) {
     ['^/research-papers/YoungLoveSmithson_2013_Letters.pdf$', 'https://www.psy.ox.ac.uk/publications/426084'],
     ['^/research-papers/YoungLoveSmithson_2013_Metrics.pdf$', 'https://www.psy.ox.ac.uk/publications/414651'],
     ['^/research-papers/BrooksNewScientist_2012_OrderedUniverse.pdf$', 'https://www.newscientist.com/article/mg21328551-600-medieval-modern-master-colour-decoded-before-its-time/'],
-    ['.?', 'https://www.psy.ox.ac.uk/team/hannah-smithson']
+    ['.?', 'https://www.psy.ox.ac.uk/people/hannah-smithson']
   ];
 
   let match = mapping.find(([pattern, url]) => {
